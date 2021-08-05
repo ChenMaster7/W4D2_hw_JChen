@@ -9,7 +9,7 @@ CREATE TABLE customers (
 CREATE TABLE movies (
 	movie_id SERIAL PRIMARY KEY,
 	movie_name VARCHAR(100),
-	movie_time TIMESTAMP, --double check when entering data
+	movie_time TIMESTAMP,
 	rating VARCHAR(10)
 );
 
@@ -26,9 +26,21 @@ CREATE TABLE tickets (
 
 CREATE TABLE concessions (
 	concession_id SERIAL PRIMARY KEY,
-	customer_id INTEGER NOT NULL,
-	foot_type VARCHAR(100),
+	food_type VARCHAR(100),
 	food_cost NUMERIC(4,2),
-	purchase_time TIMESTAMP,
-	FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+	purchase_time TIMESTAMP
 );
+
+CREATE TABLE customers_concessions (
+	customers_concessions_id SERIAL PRIMARY KEY,
+	customer_id INTEGER NOT NULL,
+	FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+	concession_id INTEGER NOT NULL,
+	FOREIGN KEY (concession_id) REFERENCES concessions(concession_id)
+);
+
+ALTER TABLE concessions 
+	ALTER COLUMN purchase_time TYPE TIMESTAMPTZ;
+	
+ALTER TABLE movies
+	ALTER COLUMN movie_time TYPE TIME;
